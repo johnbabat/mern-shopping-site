@@ -24,6 +24,7 @@ if(process.env.NODE_ENV == 'production') {
         } else {
             varPath = 'index.html'
         }
+        console.log(req.params, varPath)
         res.sendFile(path.resolve(__dirname, '..', 'frontend', 'build', varPath))
     })
 }
