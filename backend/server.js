@@ -17,15 +17,15 @@ app.use("/api/products", productRoutes);
 if(process.env.NODE_ENV == 'production') {
     // app.use(express.static(path.resolve(__dirname, '..', 'frontend', 'build')));
 
-    app.get('*', (req, res) => {
-        var varPath = req.params[0]
-        if (varPath !== '/' && varPath.endsWith('/')) {
-            varPath = varPath.slice(1,-1)
-        } else {
-            varPath = 'index.html'
-        }
-        console.log(req.params, varPath)
-        res.sendFile(path.resolve(__dirname, '..', 'frontend', 'build', varPath))
+    let root = path.join(__dirname, '..', 'frontend', 'build/')
+    app.use(express.static(root))
+    app.use(function(req, res, next) {
+
+        console.log(req.params)
+
+        if (req.method === 'GET' && req.accepts('html') && !req.is('json') && !req.path.includes('.')) {
+            res.sendFile('index.html', { root })
+        } else next()
     })
 }
 
