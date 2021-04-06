@@ -15,13 +15,10 @@ app.use("/api/products", productRoutes);
 
 // Serve static asests if in production
 if(process.env.NODE_ENV == 'production') {
-    // app.use(express.static(path.resolve(__dirname, '..', 'frontend', 'build')));
 
     let root = path.join(__dirname, '..', 'frontend', 'build/')
     app.use(express.static(root))
     app.use(function(req, res, next) {
-
-        console.log(req.params)
 
         if (req.method === 'GET' && req.accepts('html') && !req.is('json') && !req.path.includes('.')) {
             res.sendFile('index.html', { root })
