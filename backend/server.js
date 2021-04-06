@@ -15,10 +15,16 @@ app.use("/api/products", productRoutes);
 
 // Serve static asests if in production
 if(process.env.NODE_ENV == 'production') {
-    app.use(express.static('../frontend/build'));
+    // app.use(express.static(path.resolve(__dirname, '..', 'frontend', 'build')));
 
     app.get('*', (req, res) => {
-        res.sendFile(path.resolve(__dirname, '..', 'frontend', 'build', 'index.html'))
+        var varPath = req.params[0]
+        if (varPath !== '/' && varPath.endsWith('/')) {
+            varPath = varPath.slice(1,-1)
+        } else {
+            varPath = 'index.html'
+        }
+        res.sendFile(path.resolve(__dirname, '..', 'frontend', 'build', varPath))
     })
 }
 
